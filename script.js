@@ -1,31 +1,70 @@
+// ====== ELEMENTS ======
 const grid = document.getElementById("grid");
-const tools = document.querySelectorAll(".tool");
-const resetBtn = document.getElementById("reset");
+const createBtn = document.getElementById("createGrid");
+const resetAllBtn = document.getElementById("resetAll");
+const clearCardsBtn = document.getElementById("clearCards");
 
+const rowsInput = document.getElementById("rows");
+const colsInput = document.getElementById("cols");
+const iconTools = document.querySelectorAll(".tool");
+
+// ====== STATE ======
 let selectedIcon = "🔥";
 
-// tạo grid 4x4
-for (let i = 0; i < 16; i++) {
-  const cell = document.createElement("div");
-  cell.className = "cell";
-  cell.addEventListener("click", () => {
-    cell.textContent = selectedIcon;
-  });
-  grid.appendChild(cell);
+// ====== FUNCTIONS ======
+function createGrid() {
+  const rows = parseInt(rowsInput.value) || 1;
+  const cols = parseInt(colsInput.value) || 1;
+
+  grid.innerHTML = "";
+  grid.style.gridTemplateColumns = `repeat(${cols}, 60px)`;
+
+  for (let i = 0; i < rows * cols; i++) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+
+    // CLICK = ghi thẻ luôn
+    cell.addEventListener("click", () => {
+      if (!cell.classList.contains("disabled")) {
+        cell.textContent = selectedIcon;
+      }
+    });
+
+    // DOUBLE CLICK = tắt / mở ô (chỉnh layout NGẦM)
+    cell.addEventListener("dblclick", () => {
+      cell.classList.toggle("disabled");
+      cell.textContent = "";
+    });
+
+    grid.appendChild(cell);
+  }
 }
 
-// chọn tool
-tools.forEach(tool => {
-  tool.addEventListener("click", () => {
-    tools.forEach(t => t.classList.remove("active"));
-    tool.classList.add("active");
-    selectedIcon = tool.dataset.icon;
-  });
+// ====== EVENTS ======
+
+// tạo lưới
+createBtn.addEventListener("click", createGrid);
+
+// reset toàn bộ (xoá grid + layout + thẻ)
+resetAllBtn.addEventListener("click", () => {
+  grid.innerHTML = "";
 });
 
-// reset
-resetBtn.addEventListener("click", () => {
+// clear thẻ (CHỈ XOÁ ICON)
+clearCardsBtn.addEventListener("click", () => {
   document.querySelectorAll(".cell").forEach(cell => {
     cell.textContent = "";
   });
 });
+
+// chọn icon
+iconTools.forEach(btn => {
+  btn.addEventListener("click", () => {
+    iconTools.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedIcon = btn.dataset.icon || "";
+  });
+});
+
+// ====== INIT ======
+createGrid();
