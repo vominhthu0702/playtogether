@@ -9,7 +9,7 @@ const colsInput = document.getElementById("cols");
 const iconTools = document.querySelectorAll(".tool");
 
 // ====== STATE ======
-let selectedIcon = "🔥";
+let selectedIcon = "";
 
 // ====== FUNCTIONS ======
 function createGrid() {
