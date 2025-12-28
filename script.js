@@ -23,21 +23,48 @@ function createGrid() {
     const cell = document.createElement("div");
     cell.className = "cell";
 
-    // CLICK = ghi thẻ luôn
+    // CLICK = ghi thẻ
     cell.addEventListener("click", () => {
-      if (!cell.classList.contains("disabled")) {
-        cell.textContent = selectedIcon;
-      }
+      if (
+        cell.classList.contains("disabled") ||
+        cell.classList.contains("matched") ||
+        !selectedIcon
+      ) return;
+
+      cell.textContent = selectedIcon;
+      cell.dataset.icon = selectedIcon;
+
+      checkMatched();
     });
 
-    // DOUBLE CLICK = tắt / mở ô (chỉnh layout NGẦM)
-    cell.addEventListener("dblclick", () => {
-      cell.classList.toggle("disabled");
-      cell.textContent = "";
-    });
+ 
 
     grid.appendChild(cell);
   }
+}
+
+// ====== MATCH LOGIC ======
+function checkMatched() {
+  const cells = document.querySelectorAll(".cell");
+  const iconMap = {};
+
+  cells.forEach(cell => {
+    const icon = cell.dataset.icon;
+    if (!icon) return;
+
+    if (!iconMap[icon]) iconMap[icon] = [];
+    iconMap[icon].push(cell);
+  });
+
+  Object.keys(iconMap).forEach(icon => {
+    if (iconMap[icon].length === 2) {
+      iconMap[icon].forEach(cell => {
+        cell.textContent = "❌";
+        cell.dataset.icon = "";
+        cell.classList.add("matched");
+      });
+    }
+  });
 }
 
 // ====== EVENTS ======
@@ -45,15 +72,19 @@ function createGrid() {
 // tạo lưới
 createBtn.addEventListener("click", createGrid);
 
-// reset toàn bộ (xoá grid + layout + thẻ)
+// reset toàn bộ (xoá grid)
 resetAllBtn.addEventListener("click", () => {
   grid.innerHTML = "";
 });
 
-// clear thẻ (CHỈ XOÁ ICON)
+// clear thẻ (GIỮ layout)
 clearCardsBtn.addEventListener("click", () => {
   document.querySelectorAll(".cell").forEach(cell => {
-    cell.textContent = "";
+    if (!cell.classList.contains("disabled")) {
+      cell.textContent = "";
+      cell.dataset.icon = "";
+      cell.classList.remove("matched");
+    }
   });
 });
 
