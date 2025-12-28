@@ -1,0 +1,58 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #f5f6fa;
+  text-align: center;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 12px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.tool, #reset {
+  padding: 8px 12px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: white;
+}
+
+.tool.active {
+  background: #4f46e5;
+  color: white;
+}
+
+#reset {
+  background: #ef4444;
+  color: white;
+  border: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 70px);
+  gap: 8px;
+  justify-content: center;
+}
+
+.cell {
+  width: 70px;
+  height: 70px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
